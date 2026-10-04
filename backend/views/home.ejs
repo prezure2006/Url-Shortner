@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Url Shortener</title>
+</head>
+<body>
+    <h1>Url Shortener</h1>
+
+    <form action="/urls" method="POST">
+        <label for="url">Enter Your Url</label>
+        <input type="url" id="url" name="url" placeholder="https://xyz.com" required>
+        <button type="submit">Generate</button>
+    </form>
+
+    <% if (locals.id) { %>
+        <p>Short URL: <a href="/<%= id %>">http://localhost:8001/<%= id %></a></p>
+    <% } %>
+
+    <!-- <ul>
+        <% (locals.urls || []).forEach(ur => { %>
+            <li><%= ur.shortId %> - <%= ur.redirectUrl %></li>
+        <% }); %>
+    </ul> -->
+</body>
+</html>

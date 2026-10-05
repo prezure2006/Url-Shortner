@@ -22,10 +22,16 @@ export const handleGenerateNewShortUrl = async (req, res) => {
       shortId,
       redirectUrl: body.url,
       visitHistory: [],
+      createdBy: req.user._id,
     });
 
     const allUrls = await URL.find({});
-    return res.render("home", { id: shortId });
+
+    // Pass 'urls: allUrls' so home.ejs gets the list for the table
+    return res.render("home", {
+      id: shortId,
+      urls: allUrls,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
@@ -35,7 +41,9 @@ export const handleGenerateNewShortUrl = async (req, res) => {
 export const handleGetAnalytics = async (req, res) => {
   try {
     const result = await URL.findOne({ shortId: req.params.shortId });
-    if (!result) return res.status(404).json({ error: "URL not found" });
+    if (!result) {
+      return res.status(404).json({ error: "URL not found" });
+    }
 
     return res.json({
       totalClicks: result.visitHistory.length,

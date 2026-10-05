@@ -6,7 +6,8 @@ import staticRoute from "./routes/staticRoute.js";
 import UserRoute from "./routes/user.js";
 import connectToMDBS from "./connext.js";
 import { handleUserAuth } from "./controllers/userAuth.js";
-
+import cookieParser from "cookie-parser";
+import { restirctToLoggedInUserOnly, checkAuth } from "./middleware/auth.js";
 const app = express();
 const PORT = 8001;
 
@@ -19,9 +20,9 @@ app.set("views", path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use("/urls", urlRoute);
-app.use("/", staticRoute);
+app.use(cookieParser());
+app.use("/urls", restirctToLoggedInUserOnly, urlRoute);
+app.use("/", checkAuth, staticRoute);
 app.use("/user", UserRoute);
 app.get("/:shortId", async (req, res) => {
   try {

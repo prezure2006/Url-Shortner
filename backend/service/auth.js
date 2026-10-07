@@ -1,10 +1,26 @@
-// sessions cookies
+import jwt from "jsonwebtoken";
+const secret = "piyush1233";
+// Recommended: Pass only what you need
+function setUser(user) {
+  return jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    secret,
+  );
+}
+function getUser(token) {
+  // Return null if token is missing or a literal "undefined"/"null" string
+  if (!token || token === "undefined" || token === "null") return null;
 
-const sessionIDToUserMap = new Map();
-function setUser(id, user) {
-  sessionIDToUserMap.set(id, user);
+  try {
+    return jwt.verify(token, secret);
+  } catch (error) {
+    // Gracefully handle expired, tampered, or malformed tokens
+    return null;
+  }
 }
-function getUserId(id) {
-  return sessionIDToUserMap.get(id);
-}
-export { setUser, getUserId };
+// sessions cookies
+export { setUser, getUser };

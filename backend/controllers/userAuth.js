@@ -1,16 +1,30 @@
 import { v4 as uuidv4 } from "uuid";
 import { setUser } from "../service/auth.js";
 import User from "../models/users.model.js";
-
+// Handeling is user logged in or not
 const handleUserAuth = async (req, res) => {
-  const { name, email, password } = req.body;
-  await User.create({
-    name,
-    email,
-    password,
-  });
-  return res.redirect("/");
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Insufficient Information",
+      });
+    }
+    await User.create({
+      name,
+      email,
+      password,
+    });
+    return res.redirect("/");
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 };
+// Handeling logging in
 const handleUserLogin = async (req, res) => {
   try {
     const { email, password } = req.body;

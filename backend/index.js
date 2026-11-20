@@ -4,7 +4,7 @@ import urlRoute from "./routes/url.js";
 import URL from "./models/url.model.js";
 import staticRoute from "./routes/staticRoute.js";
 import UserRoute from "./routes/user.js";
-import connectToMDBS from "./connext.js";
+import connectToMDBS from "./config/connext.js";
 import { handleUserAuth } from "./controllers/userAuth.js";
 import cookieParser from "cookie-parser";
 import { restirctToLoggedInUserOnly, checkAuth } from "./middleware/auth.js";

@@ -17,10 +17,13 @@ connectToMDBS("mongodb://localhost:27017/urlshortner").then(() => {
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
-
+// middleware in request processing pipeline
 app.use(express.json());
+// it make the incoming form data into req.body accessing data
 app.use(express.urlencoded({ extended: false }));
+// it takes the cookie from the incoming request and makes it accessible in req.cookie
 app.use(cookieParser());
+// middleware to make the main page accessible to the logged in user only
 app.use("/urls", restirctToLoggedInUserOnly, urlRoute);
 app.use("/", checkAuth, staticRoute);
 app.use("/user", UserRoute);
@@ -40,7 +43,7 @@ app.get("/:shortId", async (req, res) => {
     return res.status(500).send("Server error");
   }
 });
-
+// server starting
 app.listen(PORT, () => {
   console.log("Server started at port", PORT);
 });

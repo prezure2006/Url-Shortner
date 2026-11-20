@@ -1,2 +1,0 @@
-This is a basic url shortner project which makes url short 
-and it will also keep a track of how many times a link is visited
